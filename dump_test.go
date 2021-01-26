@@ -173,10 +173,10 @@ func TestSdump_config(t *testing.T) {
 		},
 	}, data)
 	runTestWithCfg(t, "config_ValueFilter", &litter.Options{
-		ValueFilter: func(v reflect.Value) *reflect.Value {
+		ValueFilter: func(v reflect.Value) *[]byte {
 			if v.Type().Name() == "IntAlias" {
-				replacement := reflect.ValueOf(255)
-				return &replacement
+				s := []byte("255")
+				return &s
 			}
 
 			return nil
@@ -203,10 +203,10 @@ func TestSdump_config(t *testing.T) {
 		[]*IntAlias{(func(v IntAlias) *IntAlias { return &v })(20), (func(v IntAlias) *IntAlias { return &v })(20)},
 	}
 	runTestWithCfg(t, "config_ValueFilterDeep", &litter.Options{
-		ValueFilter: func(v reflect.Value) *reflect.Value {
+		ValueFilter: func(v reflect.Value) *[]byte {
 			if v.Type().Name() == "IntAlias" {
-				replacement := reflect.ValueOf(255)
-				return &replacement
+				s := []byte("255")
+				return &s
 			}
 
 			return nil

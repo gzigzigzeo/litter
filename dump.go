@@ -31,7 +31,7 @@ type Options struct {
 	HideZeroValues    bool
 	FieldExclusions   *regexp.Regexp
 	FieldFilter       func(reflect.StructField, reflect.Value) bool
-	ValueFilter       func(reflect.Value) *reflect.Value
+	ValueFilter       func(reflect.Value) *[]byte
 	HomePackage       string
 	Separator         string
 	StrictGo          bool
@@ -340,7 +340,7 @@ func (s *dumpState) dumpVal(value reflect.Value) {
 		newValue := s.config.ValueFilter(v)
 
 		if newValue != nil {
-			s.dumpVal(*newValue)
+			s.write(*newValue)
 			return
 		}
 	}
