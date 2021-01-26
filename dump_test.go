@@ -150,6 +150,7 @@ func TestSdump_config(t *testing.T) {
 		(func(v IntAlias) *IntAlias { return &v })(20),
 		litter.Dump,
 		func(s string, i int) (bool, error) { return false, nil },
+		[]IntAlias{1,2,3}
 	}
 
 	runTestWithCfg(t, "config_Compact", &litter.Options{
