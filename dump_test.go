@@ -172,6 +172,16 @@ func TestSdump_config(t *testing.T) {
 			return f.Type.Kind() == reflect.String
 		},
 	}, data)
+	runTestWithCfg(t, "config_ValueFilter", &litter.Options{
+		ValueFilter: func(v reflect.Value) *reflect.Value {
+			if v.Type().Name() == "IntAlias" {
+				replacement := reflect.ValueOf(255)
+				return &replacement
+			}
+
+			return nil
+		},
+	}, data)
 	runTestWithCfg(t, "config_StrictGo", &litter.Options{
 		StrictGo: true,
 	}, data)
