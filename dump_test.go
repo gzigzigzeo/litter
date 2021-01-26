@@ -150,7 +150,6 @@ func TestSdump_config(t *testing.T) {
 		(func(v IntAlias) *IntAlias { return &v })(20),
 		litter.Dump,
 		func(s string, i int) (bool, error) { return false, nil },
-		[]IntAlias{1,2,3}
 	}
 
 	runTestWithCfg(t, "config_Compact", &litter.Options{
@@ -196,6 +195,23 @@ func TestSdump_config(t *testing.T) {
 	runTestWithCfg(t, "config_DisablePointerReplacement_circular", &litter.Options{
 		DisablePointerReplacement: true,
 	}, circular)
+
+	aliases := []interface{}{
+		5,
+		IntAlias(5),
+		[]IntAlias{IntAlias(5), IntAlias(6)},
+		[]*IntAlias{(func(v IntAlias) *IntAlias { return &v })(20), (func(v IntAlias) *IntAlias { return &v })(20)},
+	}
+	runTestWithCfg(t, "config_ValueFilterDeep", &litter.Options{
+		ValueFilter: func(v reflect.Value) *reflect.Value {
+			if v.Type().Name() == "IntAlias" {
+				replacement := reflect.ValueOf(255)
+				return &replacement
+			}
+
+			return nil
+		},
+	}, aliases)
 }
 
 func TestSdump_multipleArgs(t *testing.T) {

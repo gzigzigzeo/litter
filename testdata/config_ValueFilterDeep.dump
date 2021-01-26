@@ -1,0 +1,12 @@
+[]interface {}{
+  5,
+  255,
+  []litter_test.IntAlias{
+    255,
+    255,
+  },
+  []*litter_test.IntAlias{
+    &255,
+    &255,
+  },
+}
